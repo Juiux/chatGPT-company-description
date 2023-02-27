@@ -31,7 +31,7 @@ const Options = () => {
     const [startingPrompt, setStartingPrompt] = useState(getStartingPrompt());
 
     //Api key hook
-    const [apiKey, setApiKey] = useState(Cookies.get("apiKey") || "")
+    const [apiKey, setApiKey] = useState(Cookies.get("apiKey") || "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")
 
     const [userPrefix, setUserPrefix] = useState(Cookies.get("userPrefix") || defaultSettings.USER_PREFIX)
     const [AIPrefix, setAIPrefix] = useState(Cookies.get("AIPrefix") || defaultSettings.AI_PREFIX)

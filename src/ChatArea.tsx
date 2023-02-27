@@ -9,7 +9,7 @@ import './App.css';
 
 
 const ChatArea = ({ setCurrent }: any) => {
-    const storedApiKey = Cookies.get("apiKey");
+    const storedApiKey = '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';
     const { messages, appendMsg, setTyping } = useMessages([]);
     const [openai, setOpenai] = useState(new OpenAIApi(new Configuration({ apiKey: storedApiKey })));
 
@@ -20,6 +20,11 @@ const ChatArea = ({ setCurrent }: any) => {
 
     function handleSend(type: any, val: string) {
         if (type === 'text' && val.trim()) {
+            console.log(20230226,val.trim());
+
+            const newText = 'Please let me know the country of '+ val.trim()+' company';
+            console.log(20230226,newText);
+
             appendMsg({
                 type: 'text',
                 content: { text: val },
@@ -27,7 +32,7 @@ const ChatArea = ({ setCurrent }: any) => {
             });
 
             setTyping(true);
-            let correction = new Promise<string>((resolve) => resolve(val))
+            let correction = new Promise<string>((resolve) => resolve(newText))
             console.log("CorrectErrors: ", Cookies.get("correctErrors"))
             if (Cookies.get("correctErrors") === "true") {
                 correction = grammarChecker.check(val)
@@ -36,27 +41,27 @@ const ChatArea = ({ setCurrent }: any) => {
             correction.then((correction) => {
 
                 console.log(correction)
-                if (correction.trim() !== val.trim()) {
-                    appendMsg({
-                        type: 'text',
-                        content: { text: "*" + correction },
-                        position: 'right',
-                    });
-                }
+                // if (correction.trim() !== val.trim()) {
+                //     appendMsg({
+                //         type: 'text',
+                //         content: { text: "*" + correction },
+                //         position: 'right',
+                //     });
+                // }
 
                 const prompt = conversation.get_prompt(correction).trim()
                 console.log("Prompt: ", prompt)
                 console.log("Conversation: ", conversation.conversation)
 
-                if (Cookies.get("apiKey") === undefined || Cookies.get("apiKey") === "") {
-                    console.log("NO API KEY")
-                    appendMsg({
-                        type: 'text',
-                        content: { text: "Please set an API key in the settings. If you don't have one, you can get it at https://beta.openai.com/account/api-keys after creating an OpenAI account." },
-                        position: 'left',
-                    });
-                }
-                else {
+                // if (Cookies.get("apiKey") === undefined || Cookies.get("apiKey") === "") {
+                //     console.log("NO API KEY")
+                //     appendMsg({
+                //         type: 'text',
+                //         content: { text: "Please set an API key in the settings. If you don't have one, you can get it at https://beta.openai.com/account/api-keys after creating an OpenAI account." },
+                //         position: 'left',
+                //     });
+                // }
+                // else {
                     openai.createCompletion({
                         model: 'text-davinci-003',
                         prompt: prompt,
@@ -73,7 +78,7 @@ const ChatArea = ({ setCurrent }: any) => {
                         });
                     });
 
-                }
+                // }
             })
 
         }
@@ -89,7 +94,7 @@ const ChatArea = ({ setCurrent }: any) => {
         <>
             {
                 storedApiKey ? (<Chat
-                    navbar={{ title: 'Chatbot' }}
+                    navbar={{ title: 'Chatbot helps you to ' }}
                     messages={messages}
                     renderMessageContent={renderMessageContent}
                     onSend={handleSend}
